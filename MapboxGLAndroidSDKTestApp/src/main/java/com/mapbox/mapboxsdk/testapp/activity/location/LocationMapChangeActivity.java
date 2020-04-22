@@ -1,6 +1,7 @@
 package com.mapbox.mapboxsdk.testapp.activity.location;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,6 +12,7 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -85,12 +87,17 @@ public class LocationMapChangeActivity extends AppCompatActivity implements OnMa
     locationComponent.activateLocationComponent(
       LocationComponentActivationOptions
         .builder(this, style)
-        .useDefaultLocationEngine(true)
+        .useDefaultLocationEngine(false)
         .build());
-
-    locationComponent.setLocationComponentEnabled(true);
-    locationComponent.setRenderMode(RenderMode.COMPASS);
-
+    Location location = new Location("");
+    location.setLatitude(0);
+    location.setLongitude(0);
+    location.setBearing(10);
+    location.setAccuracy(150);
+//    locationComponent.setLocationComponentEnabled(true);
+//    locationComponent.setRenderMode(RenderMode.COMPASS);
+    locationComponent.setCameraMode(CameraMode.TRACKING_GPS_NORTH);
+    locationComponent.forceLocationUpdate(location);
     locationComponent.addOnLocationClickListener(
       () -> Toast.makeText(this, "Location clicked", Toast.LENGTH_SHORT).show());
 
