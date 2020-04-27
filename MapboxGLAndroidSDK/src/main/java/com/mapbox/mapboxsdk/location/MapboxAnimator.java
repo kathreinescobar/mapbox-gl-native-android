@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -48,13 +50,20 @@ abstract class MapboxAnimator<K> extends ValueAnimator implements ValueAnimator.
   private final double minUpdateInterval;
   private long timeElapsed;
 
-  MapboxAnimator(@NonNull K previous, @NonNull K target, @NonNull AnimationsValueChangeListener<K> updateListener,
+  /**
+   * Makes this animator invalid and prevents it from pushing any more updates to the listener.
+   *
+   * This can be used to prevent propagating final updates when the animator should be immediately canceled.
+   */
+  private boolean invalid;
+
+  MapboxAnimator(@NonNull @Size(min = 2) K[] values, @NonNull AnimationsValueChangeListener<K> updateListener,
                  int maxAnimationFps) {
     minUpdateInterval = 1E9 / maxAnimationFps;
-    setObjectValues(previous, target);
+    setObjectValues((Object[]) values);
     setEvaluator(provideEvaluator());
     this.updateListener = updateListener;
-    this.target = target;
+    this.target = values[values.length - 1];
     addUpdateListener(this);
     addListener(new AnimatorListener());
   }
@@ -80,7 +89,9 @@ abstract class MapboxAnimator<K> extends ValueAnimator implements ValueAnimator.
   }
 
   private void postUpdates() {
-    updateListener.onNewAnimationValue(animatedValue);
+    if (!invalid) {
+      updateListener.onNewAnimationValue(animatedValue);
+    }
   }
 
   K getTarget() {
@@ -91,5 +102,9 @@ abstract class MapboxAnimator<K> extends ValueAnimator implements ValueAnimator.
 
   interface AnimationsValueChangeListener<K> {
     void onNewAnimationValue(K value);
+  }
+
+  public void makeInvalid() {
+    invalid = true;
   }
 }

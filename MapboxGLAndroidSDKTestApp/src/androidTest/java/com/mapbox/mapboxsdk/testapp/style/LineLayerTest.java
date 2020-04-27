@@ -1,10 +1,10 @@
-// This file is generated. Edit android/platform/scripts/generate-style-code.js, then run `make android-style-code`.
+// This file is generated. Edit scripts/generate-style-code.js, then run `make style-code`.
 
 package com.mapbox.mapboxsdk.testapp.style;
 
 import android.graphics.Color;
-import android.support.test.annotation.UiThreadTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.annotation.UiThreadTest;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mapbox.mapboxsdk.maps.BaseLayerTest;
 import org.junit.Before;
@@ -162,6 +162,32 @@ public class LineLayerTest extends BaseLayerTest {
     Float propertyValue = 0.3f;
     layer.setProperties(lineRoundLimit(propertyValue));
     assertEquals(layer.getLineRoundLimit().getValue(), propertyValue);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testLineSortKeyAsConstant() {
+    Timber.i("line-sort-key");
+    assertNotNull(layer);
+    assertNull(layer.getLineSortKey().getValue());
+
+    // Set and Get
+    Float propertyValue = 0.3f;
+    layer.setProperties(lineSortKey(propertyValue));
+    assertEquals(layer.getLineSortKey().getValue(), propertyValue);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testLineSortKeyAsExpression() {
+    Timber.i("line-sort-key-expression");
+    assertNotNull(layer);
+    assertNull(layer.getLineSortKey().getExpression());
+
+    // Set and Get
+    Expression expression = number(Expression.get("undefined"));
+    layer.setProperties(lineSortKey(expression));
+    assertEquals(layer.getLineSortKey().getExpression(), expression);
   }
 
   @Test

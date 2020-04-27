@@ -3,9 +3,9 @@ package com.mapbox.mapboxsdk.location;
 import android.content.Context;
 import android.graphics.PointF;
 import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import android.view.MotionEvent;
 
 import com.mapbox.android.gestures.AndroidGesturesManager;
@@ -103,6 +103,9 @@ final class LocationCameraController {
                      @Nullable Double zoom, @Nullable Double bearing, @Nullable Double tilt,
                      @Nullable OnLocationCameraTransitionListener internalTransitionListener) {
     if (this.cameraMode == cameraMode) {
+      if (internalTransitionListener != null) {
+        internalTransitionListener.onLocationCameraTransitionFinished(cameraMode);
+      }
       return;
     }
 

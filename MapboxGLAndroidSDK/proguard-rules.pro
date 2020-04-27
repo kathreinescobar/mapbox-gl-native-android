@@ -27,6 +27,9 @@
 -keep class com.mapbox.geojson.** { *; }
 -dontwarn com.google.auto.value.**
 
+# config for telemetry events
+-keep class com.mapbox.mapboxsdk.module.telemetry.** { *; }
+
 # config for additional notes
 -dontnote org.robolectric.Robolectric
 -dontnote libcore.io.Memory
@@ -39,3 +42,9 @@
 # a large amount of users combine it with our SDK
 # we aren't able to provide a proguard config in that project (jar vs aar)
 -dontwarn com.sun.xml.internal.ws.spi.db.*
+
+# config for SoLoader https://github.com/mapbox/mapbox-gl-native-android/issues/60,
+# https://github.com/facebook/SoLoader/blob/master/java/com/facebook/soloader/soloader.pro
+-keep class com.facebook.soloader.SysUtil$LollipopSysdeps {
+    public <methods>;
+}

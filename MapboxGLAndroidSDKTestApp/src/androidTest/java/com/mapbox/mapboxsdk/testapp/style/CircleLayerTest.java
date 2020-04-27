@@ -1,10 +1,10 @@
-// This file is generated. Edit android/platform/scripts/generate-style-code.js, then run `make android-style-code`.
+// This file is generated. Edit scripts/generate-style-code.js, then run `make style-code`.
 
 package com.mapbox.mapboxsdk.testapp.style;
 
 import android.graphics.Color;
-import android.support.test.annotation.UiThreadTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.annotation.UiThreadTest;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mapbox.mapboxsdk.maps.BaseLayerTest;
 import org.junit.Before;
@@ -98,6 +98,32 @@ public class CircleLayerTest extends BaseLayerTest {
   }
 
 
+
+  @Test
+  @UiThreadTest
+  public void testCircleSortKeyAsConstant() {
+    Timber.i("circle-sort-key");
+    assertNotNull(layer);
+    assertNull(layer.getCircleSortKey().getValue());
+
+    // Set and Get
+    Float propertyValue = 0.3f;
+    layer.setProperties(circleSortKey(propertyValue));
+    assertEquals(layer.getCircleSortKey().getValue(), propertyValue);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testCircleSortKeyAsExpression() {
+    Timber.i("circle-sort-key-expression");
+    assertNotNull(layer);
+    assertNull(layer.getCircleSortKey().getExpression());
+
+    // Set and Get
+    Expression expression = number(Expression.get("undefined"));
+    layer.setProperties(circleSortKey(expression));
+    assertEquals(layer.getCircleSortKey().getExpression(), expression);
+  }
 
   @Test
   @UiThreadTest

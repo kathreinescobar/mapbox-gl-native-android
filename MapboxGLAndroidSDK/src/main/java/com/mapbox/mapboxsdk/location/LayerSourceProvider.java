@@ -1,13 +1,18 @@
 package com.mapbox.mapboxsdk.location;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import com.mapbox.geojson.Feature;
 import com.mapbox.mapboxsdk.style.layers.CircleLayer;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.layers.TransitionOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.mapbox.mapboxsdk.location.LocationComponentConstants.ACCURACY_LAYER;
 import static com.mapbox.mapboxsdk.location.LocationComponentConstants.BACKGROUND_LAYER;
@@ -107,5 +112,28 @@ class LayerSourceProvider {
         circleStrokeColor(get(PROPERTY_ACCURACY_COLOR)),
         circlePitchAlignment(Property.CIRCLE_PITCH_ALIGNMENT_MAP)
       );
+  }
+
+  Set<String> getEmptyLayerSet() {
+    return new HashSet<>();
+  }
+
+  LocationLayerRenderer getSymbolLocationLayerRenderer(LayerFeatureProvider featureProvider,
+                                                       boolean isStale) {
+    return new SymbolLocationLayerRenderer(this, featureProvider, isStale);
+  }
+
+  LocationLayerRenderer getIndicatorLocationLayerRenderer() {
+    return new IndicatorLocationLayerRenderer(this);
+  }
+
+  Layer generateLocationComponentLayer() {
+    LocationIndicatorLayer layer = new LocationIndicatorLayer(FOREGROUND_LAYER);
+    layer.setLocationTransition(new TransitionOptions(0, 0));
+    layer.setProperties(
+      LocationPropertyFactory.perspectiveCompensation(0.9f),
+      LocationPropertyFactory.imageTiltDisplacement(4f)
+    );
+    return layer;
   }
 }
