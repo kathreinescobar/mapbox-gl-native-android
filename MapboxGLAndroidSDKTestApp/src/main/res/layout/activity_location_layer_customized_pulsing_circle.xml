@@ -16,15 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:mapbox_uiAttribution="false" />
 
-    <View
-        android:id="@+id/view_protected_gesture_area"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.5"
-        android:background="@android:color/holo_red_light"
-        app:layout_constraintStart_toStartOf="@id/mapView"
-        app:layout_constraintTop_toTopOf="@id/mapView" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         style="?android:attr/buttonBarStyle"
@@ -41,39 +32,39 @@
         tools:layout_constraintRight_creator="1">
 
         <TextView
-            android:id="@+id/tv_mode"
+            android:id="@+id/tv_frequency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".75"
             android:gravity="center"
-            android:text="Mode:"
+            android:text="Duration:"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button_location_mode"
+            android:id="@+id/button_location_circle_duration"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.25"
             android:gravity="center"
-            android:text="Normal"
+            tools:text="400ms"
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/tv_tracking"
+            android:id="@+id/tv_color"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".85"
             android:gravity="center"
-            android:text="Tracking:"
+            android:text="Color:"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button_location_tracking"
+            android:id="@+id/button_location_circle_color"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
